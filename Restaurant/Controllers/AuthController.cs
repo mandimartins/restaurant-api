@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Restaurant.Data.ViewModel;
 using Restaurant.Services.Interfaces;
+using Restaurant.Utilities.NotificationPattern;
 
 namespace Restaurant.Controllers
 {
@@ -11,10 +13,12 @@ namespace Restaurant.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly INotificationHandler _notificationHandler;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, INotificationHandler notificationHandler)
         {
             this._authService = authService;
+            this._notificationHandler = notificationHandler;
         }
 
         [HttpPost("signup")]
@@ -22,7 +26,12 @@ namespace Restaurant.Controllers
         {
             try
             {
-                return Ok(await _authService.SignUpAsync(signUp));
+                var response = await _authService.SignUpAsync(signUp);
+
+                if (!_notificationHandler.Messages().IsNullOrEmpty())
+                    return BadRequest(_notificationHandler.Messages());
+
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -35,7 +44,12 @@ namespace Restaurant.Controllers
         {
             try
             {
-                return Ok(await _authService.SignInAsync(signIn));
+                var response = await _authService.SignInAsync(signIn);
+
+                if (!_notificationHandler.Messages().IsNullOrEmpty())
+                    return BadRequest(_notificationHandler.Messages());
+
+                return Ok(response);
             }
             catch (Exception ex)
             {
