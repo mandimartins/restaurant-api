@@ -39,5 +39,23 @@ namespace Restaurant.Controllers
                return BadRequest(new Message(ex.Message, ex.Message, ex.StackTrace));
             }
         }
+
+        [HttpGet("get/{id}")]
+        public async Task<IActionResult> Get(int Id)
+        {
+            try
+            {
+                var response = await _categoryService.GetAsyncAsNoTracking(Id);
+
+                if (!_notificationHandler.Messages().IsNullOrEmpty())
+                    return BadRequest(_notificationHandler.Messages());
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new Message(ex.Message, ex.Message, ex.StackTrace));
+            }
+        }
     }
 }

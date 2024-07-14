@@ -39,9 +39,9 @@ namespace Restaurant.Services
             throw new NotImplementedException();
         }
 
-        public Task<Category> GetAsyc(int id)
+        public async Task<Category> GetAsyncAsNoTracking(int Id)
         {
-            throw new NotImplementedException();
+            return await _categoryRepository.GetAsyncAsNoTracking(Id);
         }
 
         public Task<Category> UpdateAsync(CategoryViewModel category)
