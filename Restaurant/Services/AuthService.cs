@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Restaurant.Data.ViewModel;
 using Restaurant.Services.Interfaces;
+using Restaurant.Utilities.ExtensionMethods;
+using Restaurant.Utilities.NotificationPattern;
 
 namespace Restaurant.Services
 {
@@ -8,18 +10,24 @@ namespace Restaurant.Services
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IJwtTokenService _jwtTokenService;
+        private readonly INotificationHandler _notificationHandler;
 
         public AuthService(
             UserManager<IdentityUser> userManager, 
             IConfiguration configuration,
-            IJwtTokenService jwtTokenService)
+            IJwtTokenService jwtTokenService,
+            INotificationHandler notificationHandler)
         {
             this._userManager = userManager;
             this._jwtTokenService = jwtTokenService;
+            this._notificationHandler = notificationHandler;
         }
 
         public async Task<bool> SignUpAsync(AuthViewModel signUp)
         {
+            if (!signUp.Validate().Notify(_notificationHandler))
+                return false;
+
             var identityUser = new IdentityUser()
             {
                 Email = signUp.Email,
@@ -35,7 +43,11 @@ namespace Restaurant.Services
         {
             var user = await _userManager.FindByEmailAsync(signIn.Email);
 
-            if (user == null) throw new Exception("error on login");
+            if (user == null)
+            {
+                _notificationHandler.AddMessage(new Message() { Title = "Wrong credentials",Content ="Wrong credentials!" });
+                return new UserInfoViewModel();
+            }
 
             var isSignedIn = await _userManager.CheckPasswordAsync(user, signIn.Password);
 
