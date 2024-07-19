@@ -1,2 +1,2 @@
 # restaurant-api
-Aspnet core api with authentication, notification pattern , N-tier archtecture
+Aspnet core api with authentication, FluentValidation, notification pattern , N-tier archtecture
