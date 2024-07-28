@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Restaurant.Data.Models;
 using Restaurant.Data.ViewModel;
+using Restaurant.Data.ViewModels;
 using Restaurant.Services.Interfaces;
 using Restaurant.Utilities.NotificationPattern;
 
@@ -57,5 +59,34 @@ namespace Restaurant.Controllers
                 return BadRequest(new Message(ex.Message, ex.Message, ex.StackTrace));
             }
         }
+
+        [HttpPost("getall")]
+        public async Task<IActionResult> GetAll([FromBody] GridFilterViewModel filter)
+        {
+            try
+            {
+                (int total, IList<Category> data) = await _categoryService.GetAllAsyncAsNoTracking(filter);
+
+                return Ok(new {total, data});
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new Message(ex.Message, ex.Message, ex.StackTrace));
+            }
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> Delete(int Id)
+        {
+            try
+            {
+                return Ok(await _categoryService.DeleteAsync(Id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new Message(ex.Message, ex.Message, ex.StackTrace));
+            }
+        }
+
     }
 }
