@@ -5,6 +5,7 @@ using Restaurant.Repositories.Interfaces;
 using Restaurant.Services.Interfaces;
 using Restaurant.Utilities.ExtensionMethods;
 using Restaurant.Utilities.NotificationPattern;
+using Restaurant.Data.ViewModels;
 
 namespace Restaurant.Services
 {
@@ -34,14 +35,19 @@ namespace Restaurant.Services
             return await _categoryRepository.AddAsync(category);
         }
 
-        public Task<Category> DeleteAsync(CategoryViewModel category)
+        public async Task<Category> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _categoryRepository.DeleteAsync(id);
         }
 
         public async Task<Category> GetAsyncAsNoTracking(int Id)
         {
             return await _categoryRepository.GetAsyncAsNoTracking(Id);
+        }
+
+        public async Task<(int totalRows, IList<Category> data)> GetAllAsyncAsNoTracking(GridFilterViewModel filter)
+        {
+            return await _categoryRepository.GetAllAsyncAsNoTracking(filter);
         }
 
         public Task<Category> UpdateAsync(CategoryViewModel category)
