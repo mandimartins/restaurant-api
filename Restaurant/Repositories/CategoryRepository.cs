@@ -1,8 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Restaurant.Data;
+using Restaurant.Data.Enums.Shared;
 using Restaurant.Data.Models;
 using Restaurant.Data.ViewModels;
 using Restaurant.Repositories.Interfaces;
+using System.Linq.Expressions;
 
 namespace Restaurant.Repositories
 {
@@ -36,7 +39,51 @@ namespace Restaurant.Repositories
             var query = _context.Set<Category>()
                  .AsNoTracking();
 
+            int id = 0;
+            int.TryParse(filter.FilterTerm, out id);
+
+            switch (filter.FilterType)
+            {
+                case (int)FilterTypeEnum.Code:
+                    query = query.Where(c => c.Id == id);
+                    break;
+                case (int)FilterTypeEnum.Name:
+                    query = query.Where(c => c.Name.Contains(filter.FilterTerm));
+                    break;
+                case (int)FilterTypeEnum.Description:
+                    query = query.Where(c => c.Description.Contains(filter.FilterTerm));
+                    break;
+                default:
+                    break;
+            }
+
             var totalRows = await query.CountAsync();
+
+            if (!filter.Sort.IsNullOrEmpty())
+            {
+                foreach (var item in filter.Sort)
+                {
+
+                    if (item.Column.Equals("Id") && item.Direction.Equals("asc"))
+                         query = query.OrderBy(c => c.Description);
+
+                    if (item.Column.Equals("Id") && item.Direction.Equals("desc"))
+                        query = query.OrderByDescending(c => c.Description);
+
+                    if (item.Column.Equals("Name") && item.Direction.Equals("asc"))
+                        query = query.OrderBy(c => c.Description);
+
+                    if (item.Column.Equals("Name") && item.Direction.Equals("desc"))
+                        query = query.OrderByDescending(c => c.Description);
+
+                    if (item.Column.Equals("Description") && item.Direction.Equals("asc"))
+                        query = query.OrderBy(c => c.Description);
+
+                    if (item.Column.Equals("Description") && item.Direction.Equals("desc"))
+                        query = query.OrderByDescending(c => c.Description);
+
+                }
+            }
 
             var data = await query
                 .Skip(filter.Skip)
