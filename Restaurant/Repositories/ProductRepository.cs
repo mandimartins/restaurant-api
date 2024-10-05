@@ -45,6 +45,7 @@ namespace Restaurant.Repositories
                             Description = p.Description,
                             Price = p.Price,
                             ImageUrl = p.ImageUrl,
+                            IdCategory = p.IdCategory,
                             CategoryName = p.Category.Name
                         })
                  .AsNoTracking();
@@ -75,22 +76,28 @@ namespace Restaurant.Repositories
                 {
 
                     if (item.Column.Equals("Id") && item.Direction.Equals("asc"))
-                        query = query.OrderBy(c => c.Description);
+                        query = query.OrderBy(c => c.Id);
 
                     if (item.Column.Equals("Id") && item.Direction.Equals("desc"))
-                        query = query.OrderByDescending(c => c.Description);
+                        query = query.OrderByDescending(c => c.Id);
 
                     if (item.Column.Equals("Name") && item.Direction.Equals("asc"))
-                        query = query.OrderBy(c => c.Description);
+                        query = query.OrderBy(c => c.Name);
 
                     if (item.Column.Equals("Name") && item.Direction.Equals("desc"))
-                        query = query.OrderByDescending(c => c.Description);
+                        query = query.OrderByDescending(c => c.Name);
 
                     if (item.Column.Equals("Description") && item.Direction.Equals("asc"))
                         query = query.OrderBy(c => c.Description);
 
                     if (item.Column.Equals("Description") && item.Direction.Equals("desc"))
                         query = query.OrderByDescending(c => c.Description);
+
+                    if (item.Column.Equals("Price") && item.Direction.Equals("asc"))
+                        query = query.OrderBy(c => (double)c.Price); //this aproach is only needed for sqlite, it does not support decimals
+
+                    if (item.Column.Equals("Price") && item.Direction.Equals("desc"))
+                        query = query.OrderByDescending(c => (double)c.Price); //this aproach is only needed for sqlite, it does not support decimals
 
                     if (item.Column.Equals("Category") && item.Direction.Equals("asc"))
                         query = query.OrderBy(c => c.IdCategory);
