@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Restaurant.Data.ViewModel;
 using Restaurant.Data.Models;
+using Restaurant.Data.ViewModels;
 
 namespace Restaurant.Data.Mappings
 {
@@ -10,6 +11,7 @@ namespace Restaurant.Data.Mappings
         public MappingsConfig()
         {
             CreateMap<Category, CategoryViewModel>().ReverseMap();
+            CreateMap<Product, ProductViewModel>().ReverseMap();
         }
     }
 }

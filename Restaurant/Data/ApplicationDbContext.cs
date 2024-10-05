@@ -12,6 +12,7 @@ namespace Restaurant.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new CategoryConfig());
+            builder.ApplyConfiguration(new ProductConfig());
             base.OnModelCreating(builder);
         }
     }
