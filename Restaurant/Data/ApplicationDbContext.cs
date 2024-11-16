@@ -15,6 +15,8 @@ namespace Restaurant.Data
             builder.ApplyConfiguration(new ProductConfig());
             builder.ApplyConfiguration(new OrderConfig());
             builder.ApplyConfiguration(new OrderItemConfig());
+            builder.ApplyConfiguration(new MenuConfig());
+            builder.ApplyConfiguration(new MenuItemConfig());
             base.OnModelCreating(builder);
         }
     }
