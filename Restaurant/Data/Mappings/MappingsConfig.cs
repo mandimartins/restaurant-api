@@ -7,7 +7,6 @@ namespace Restaurant.Data.Mappings
 {
     public class MappingsConfig:Profile
     {
-
         public MappingsConfig()
         {
             CreateMap<Category, CategoryViewModel>().ReverseMap();
