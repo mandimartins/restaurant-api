@@ -13,6 +13,8 @@ namespace Restaurant.Data
         {
             builder.ApplyConfiguration(new CategoryConfig());
             builder.ApplyConfiguration(new ProductConfig());
+            builder.ApplyConfiguration(new OrderConfig());
+            builder.ApplyConfiguration(new OrderItemConfig());
             base.OnModelCreating(builder);
         }
     }
