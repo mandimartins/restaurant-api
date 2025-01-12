@@ -1,34 +1,35 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using Restaurant.Data.DTOs;
+using Restaurant.Data.Models;
+using Restaurant.Data.ViewModel;
 using Restaurant.Data.ViewModels;
 using Restaurant.Services.Interfaces;
 using Restaurant.Utilities.NotificationPattern;
 
 namespace Restaurant.Controllers
 {
-    [Route("api/product")]
+    [Route("api/menu")]
     [ApiController]
     [Authorize]
-    public class ProductController : ControllerBase
+    public class MenuController : ControllerBase
     {
-        private readonly IProductService _productService;
+        private readonly IMenuService _menuService;
         private readonly INotificationHandler _notificationHandler;
-        public ProductController(
-            IProductService productService,
+        public MenuController(
+            IMenuService menuService,
             INotificationHandler notificationHandler)
         {
-            _productService = productService;
+            _menuService = menuService;
             _notificationHandler = notificationHandler;
         }
 
         [HttpPost("add")]
-        public async Task<IActionResult> Add([FromBody] ProductViewModel product)
+        public async Task<IActionResult> Add([FromBody] MenuViewModel menu)
         {
             try
             {
-                var response = await _productService.AddAsync(product);
+                var response = await _menuService.AddAsync(menu);
 
                 if (!_notificationHandler.Messages().IsNullOrEmpty())
                     return BadRequest(_notificationHandler.Messages());
@@ -37,7 +38,7 @@ namespace Restaurant.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new Message(ex.Message, ex.Message, ex.StackTrace));
+               return BadRequest(new Message(ex.Message, ex.Message, ex.StackTrace));
             }
         }
 
@@ -46,7 +47,7 @@ namespace Restaurant.Controllers
         {
             try
             {
-                var response = await _productService.GetAsyncAsNoTracking(Id);
+                var response = await _menuService.GetAsyncAsNoTracking(Id);
 
                 if (!_notificationHandler.Messages().IsNullOrEmpty())
                     return BadRequest(_notificationHandler.Messages());
@@ -64,9 +65,9 @@ namespace Restaurant.Controllers
         {
             try
             {
-                (int total, IList<ProductDTO> data) = await _productService.GetAllAsyncAsNoTracking(filter);
+                (int total, IList<Menu> data) = await _menuService.GetAllAsyncAsNoTracking(filter);
 
-                return Ok(new { total, data });
+                return Ok(new {total, data});
             }
             catch (Exception ex)
             {
@@ -79,13 +80,13 @@ namespace Restaurant.Controllers
         {
             try
             {
-                return Ok(await _productService.DeleteAsync(Id));
+                return Ok(await _menuService.DeleteAsync(Id));
             }
             catch (Exception ex)
             {
                 return BadRequest(new Message(ex.Message, ex.Message, ex.StackTrace));
             }
         }
+
     }
 }
-  
