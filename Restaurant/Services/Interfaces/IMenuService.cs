@@ -1,5 +1,5 @@
-﻿using Restaurant.Data.ViewModel;
-using Restaurant.Data.Models;
+﻿using Restaurant.Data.Models;
+using Restaurant.Data.ViewModel;
 using Restaurant.Data.ViewModels;
 
 namespace Restaurant.Services.Interfaces
@@ -11,5 +11,6 @@ namespace Restaurant.Services.Interfaces
         Task<Menu> AddAsync(MenuViewModel category);
         Task<Menu> UpdateAsync(MenuViewModel category);
         Task<Menu> DeleteAsync(int id);
+        Task<IList<Menu>> GetAllAsyncAsNoTracking();
     }
 }

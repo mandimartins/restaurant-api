@@ -9,5 +9,6 @@ namespace Restaurant.Repositories.Interfaces
         Task<Menu> GetAsyncAsNoTracking(int Id);
         Task<(int TotalRows, IList<Menu> data)> GetAllAsyncAsNoTracking(GridFilterViewModel filter);
         Task<Menu> DeleteAsync(int id);
+        Task<IList<Menu>> GetAllAsyncAsNoTracking();
     }
 }
