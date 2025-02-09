@@ -33,7 +33,8 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 }).AddEntityFrameworkStores<ApplicationDbContext>()
   .AddDefaultTokenProviders();
 
-builder.Services.AddAuthentication(options => {
+builder.Services.AddAuthentication(options =>
+{
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
@@ -51,8 +52,19 @@ builder.Services.AddAuthentication(options => {
     };
 });
 
-builder.Services.AddSingleton<IJwtTokenService, JwtTokenService>();
+// Add CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularApp", builder =>
+    {
+        builder.WithOrigins("http://localhost:4200") // Allow only Angular app
+               .AllowCredentials() // Allow credentials (e.g., cookies)
+               .AllowAnyMethod() // Allow all HTTP methods
+               .AllowAnyHeader(); // Allow all headers
+    });
+});
 
+builder.Services.AddSingleton<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddScoped<INotificationHandler, NotificationHandler>();
@@ -79,13 +91,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(builder =>
-{
-    builder.WithOrigins("http://localhost:4200")
-           .AllowCredentials()
-           .AllowAnyMethod()
-           .AllowAnyHeader();
-});
+app.UseCors("AllowAngularApp");
 
 app.UseHttpsRedirection();
 

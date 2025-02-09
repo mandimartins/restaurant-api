@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using Restaurant.Data.ViewModel;
 using Restaurant.Data.Models;
+using Restaurant.Data.ViewModel;
+using Restaurant.Data.ViewModels;
 using Restaurant.Repositories.Interfaces;
 using Restaurant.Services.Interfaces;
 using Restaurant.Utilities.ExtensionMethods;
 using Restaurant.Utilities.NotificationPattern;
-using Restaurant.Data.ViewModels;
 
 namespace Restaurant.Services
 {
@@ -53,6 +53,11 @@ namespace Restaurant.Services
         public Task<Menu> UpdateAsync(MenuViewModel menu)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<IList<Menu>> GetAllAsyncAsNoTracking()
+        {
+            return await _menuRepository.GetAllAsyncAsNoTracking();
         }
     }
 }

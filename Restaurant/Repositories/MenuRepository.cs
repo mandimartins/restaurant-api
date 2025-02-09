@@ -5,7 +5,6 @@ using Restaurant.Data.Enums.Shared;
 using Restaurant.Data.Models;
 using Restaurant.Data.ViewModels;
 using Restaurant.Repositories.Interfaces;
-using System.Linq.Expressions;
 
 namespace Restaurant.Repositories
 {
@@ -28,10 +27,10 @@ namespace Restaurant.Repositories
 
         public async Task<Menu> GetAsyncAsNoTracking(int Id)
         {
-           return await  _context.Set<Menu>()
-                .AsNoTracking()
-                .Where(c => c.Id == Id)
-                .FirstAsync();
+            return await _context.Set<Menu>()
+                 .AsNoTracking()
+                 .Where(c => c.Id == Id)
+                 .FirstAsync();
         }
 
         public async Task<(int TotalRows, IList<Menu> data)> GetAllAsyncAsNoTracking(GridFilterViewModel filter)
@@ -65,7 +64,7 @@ namespace Restaurant.Repositories
                 {
 
                     if (item.Column.Equals("Id") && item.Direction.Equals("asc"))
-                         query = query.OrderBy(c => c.Description);
+                        query = query.OrderBy(c => c.Description);
 
                     if (item.Column.Equals("Id") && item.Direction.Equals("desc"))
                         query = query.OrderByDescending(c => c.Description);
@@ -103,6 +102,13 @@ namespace Restaurant.Repositories
             await _context.SaveChangesAsync();
 
             return menu;
+        }
+
+        public async Task<IList<Menu>> GetAllAsyncAsNoTracking()
+        {
+            return await _context.Set<Menu>()
+                 .AsNoTracking()
+                 .ToListAsync();
         }
     }
 }
