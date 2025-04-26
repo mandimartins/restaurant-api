@@ -59,5 +59,11 @@ namespace Restaurant.Services
         {
             return await _menuRepository.GetAllAsyncAsNoTracking();
         }
+
+        public async Task<IList<MenuItem>> GetAllMenuItensByIdMenuAsNoTracking(int idMenu)
+        {
+            return await _menuRepository.GetAllMenuItensByIdMenuAsNoTracking(idMenu);
+        }
+
     }
 }

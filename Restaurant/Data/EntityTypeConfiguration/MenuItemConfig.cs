@@ -10,10 +10,13 @@ namespace Restaurant.Data.EntityTypeConfiguration
         {
             builder.HasKey(x => x.Id);
 
+            builder.Property(x => x.Description)
+                .IsRequired();
+
             builder.Property(x => x.IdMenu)
                  .IsRequired();
 
-            builder.Property(x => x.IdProduct) 
+            builder.Property(x => x.IdProduct)
                 .IsRequired();
 
             builder.HasOne(x => x.Product)

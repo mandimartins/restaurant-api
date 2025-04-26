@@ -12,5 +12,7 @@ namespace Restaurant.Services.Interfaces
         Task<Menu> UpdateAsync(MenuViewModel category);
         Task<Menu> DeleteAsync(int id);
         Task<IList<Menu>> GetAllAsyncAsNoTracking();
+
+        Task<IList<MenuItem>> GetAllMenuItensByIdMenuAsNoTracking(int idMenu);
     }
 }

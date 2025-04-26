@@ -110,5 +110,13 @@ namespace Restaurant.Repositories
                  .AsNoTracking()
                  .ToListAsync();
         }
+
+        public async Task<IList<MenuItem>> GetAllMenuItensByIdMenuAsNoTracking(int idMenu)
+        {
+            return await _context.Set<MenuItem>()
+                     .Where(x => x.Id == idMenu)
+                     .AsNoTracking()
+                     .ToListAsync();
+        }
     }
 }

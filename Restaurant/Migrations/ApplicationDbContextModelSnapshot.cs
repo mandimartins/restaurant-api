@@ -279,6 +279,10 @@ namespace Restaurant.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("IdMenu")
                         .HasColumnType("INTEGER");
 

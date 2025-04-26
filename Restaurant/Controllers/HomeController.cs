@@ -18,13 +18,25 @@ namespace Restaurant.Controllers
             _notificationHandler = notificationHandler;
         }
 
-
         [HttpGet("getmenus")]
         public async Task<IActionResult> GetMenus()
         {
             try
             {
-                var response = await _menuService.GetAllAsyncAsNoTracking();
+                return Ok(await _menuService.GetAllAsyncAsNoTracking());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new Message(ex.Message, ex.Message, ex.StackTrace));
+            }
+        }
+
+        [HttpGet("getmenuitens/{id}")]
+        public async Task<IActionResult> GetMenuItens(int id)
+        {
+            try
+            {
+                var response = await _menuService.GetAllMenuItensByIdMenuAsNoTracking(id);
 
                 return Ok(response);
             }
